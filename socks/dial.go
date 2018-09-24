@@ -18,6 +18,7 @@ Example http client over SOCKS5:
 	client := &http.Client{Transport: tr}
 	resp, err := client.Get("https://example.com")
 */
+
 package socks
 
 import (
@@ -36,13 +37,13 @@ const (
 	defaultPort = 1080
 
 	authNone             = 0
-	authGssApi           = 1
+	authGssAPI           = 1
 	authUsernamePassword = 2
 	authUnavailable      = 0xff
 
-	commandTcpConnect   = 1
-	commandTcpBind      = 2
-	commandUdpAssociate = 3
+	commandTCPConnect   = 1
+	commandTCPBind      = 2
+	commandUDPAssociate = 3
 
 	addressTypeIPv4   = 1
 	addressTypeDomain = 3
@@ -54,7 +55,7 @@ const (
 	statusNetworkUnreachable      = 3
 	statusHostUnreachable         = 4
 	statusConnectionRefused       = 5
-	statusTtlExpired              = 6
+	statusTTLExpired              = 6
 	statusCommandNotSupport       = 7
 	statusAddressTypeNotSupported = 8
 )
@@ -70,7 +71,7 @@ var (
 		statusNetworkUnreachable:      errors.New("network unreachable"),
 		statusHostUnreachable:         errors.New("host unreachable"),
 		statusConnectionRefused:       errors.New("connection refused by destination host"),
-		statusTtlExpired:              errors.New("TTL expired"),
+		statusTTLExpired:              errors.New("TTL expired"),
 		statusCommandNotSupport:       errors.New("command not supported / protocol error"),
 		statusAddressTypeNotSupported: errors.New("address type not supported"),
 	}
@@ -157,7 +158,7 @@ func (p *Proxy) dial(network, addr string, timeout time.Duration) (net.Conn, err
 		err = ErrInvalidProxyResponse
 	case authUnavailable:
 		err = ErrNoAcceptableAuthMethod
-	case authGssApi:
+	case authGssAPI:
 		err = ErrNoAcceptableAuthMethod
 	case authUsernamePassword:
 		buf = buf[:3+len(user)+len(pass)]
@@ -191,7 +192,7 @@ func (p *Proxy) dial(network, addr string, timeout time.Duration) (net.Conn, err
 
 	buf = buf[:7+len(host)]
 	buf[0] = protocolVersion
-	buf[1] = commandTcpConnect
+	buf[1] = commandTCPConnect
 	buf[2] = 0 // reserved
 	buf[3] = addressTypeDomain
 	buf[4] = byte(len(host))
